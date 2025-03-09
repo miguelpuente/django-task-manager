@@ -135,5 +135,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-# Configuración Email
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Configuración de Celery
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+
+# Configuración de Email
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+# Configuración duración token reset password
+PASSWORD_RESET_TIMEOUT = 3600  # 1 hora (en segundos)
