@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Inicio{% endblock titulo %}</title>
+    <link rel="stylesheet" href={% static "css/style.css" %}>
+    <link rel="stylesheet" href={% static "css/responsive.css" %}>
+    {% block css %}{% endblock css %}
+    <script defer src={% static "js/script.js" %} ></script>
+    {% block scripts %}{% endblock scripts %}
+
+</head>
+
+<body>
+
+    <!-- Barra superior -->
+    <header>
+        <div class="logosec">
+            <h1 class="logo">Miguel Puente</h1>
+            <div id="menuicn">
+                <img src={% static "img/principal/hamburguesa.png" %}
+                class="icn menuicn"
+                alt="Icono menu">
+            </div>
+        </div>
+        
+        {% if user.is_authenticated %}
+        <form class="searchbar">
+            <input type="search" placeholder="Buscar" aria-label="Search">
+            <button class="searchbtn">
+                <img src={% static "img/principal/busqueda.png" %}
+                    class="icn srchicn" 
+                    alt="search-icon">
+            </button>
+        </form>
+
+        <div class="message">
+            <span class="circle"></span>
+            <img src={% static "img/principal/notificacion.png" %} 
+                class="icn" 
+                alt="notifications">
+            <figure class="dp">
+                <img src={% static "img/principal/user.png" %}
+                    class="dpicn" 
+                    alt="profile">
+            </figure>
+        </div>
+        {% endif %}
+    </header>
+
+    <div class="main-container">
+        <!-- Panel lateral izquierdo -->
+        <aside class="navcontainer">
+            <nav class="nav">
+                <ul class="nav-upper-options">
+
+                    <li class="nav-option option1">
+                        <img src={% static "img/principal/dashboard.png" %}
+                            class="nav-img" 
+                            alt="dashboard">
+                        <h3> Dashboard</h3>
+                    </li>
+
+                    <li class="nav-option option6">
+                        <img src={% static "img/principal/configuracion.png" %}
+                            class="nav-img" 
+                            alt="settings">
+                        <h3> Settings</h3>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-option logout">
+                        <img src={% static "img/principal/logout.png" %}
+                            class="nav-img" 
+                            alt="logout">
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit"><h3>Cerrar Sesión</h3></button>
+                            </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-option login">
+                        <img src={% static "img/principal/logout.png" %}
+                            class="nav-img" 
+                            alt="login">
+                            <a href={% url "login" %}><h3>Ingresar</h3> </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main">
+
+            {% block contenido %}{% endblock contenido %}
+
+        </main>
+    </div>
+
+</body>
+</html>

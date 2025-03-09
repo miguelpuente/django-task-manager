@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" 
+          content="width=device-width, initial-scale=1.0">
+    <title>Miembros</title>
+    <link rel="stylesheet" href={% static "css/style.css" %}>
+    <link rel="stylesheet" href={% static "css/responsive.css" %}>
+	<link rel="stylesheet" href="{% static 'css/usuarios/login.css' %}">
+    <script defer src={% static "js/usuarios/login.js" %} ></script>
+
+</head>
+
+<body>
+
+        <main class="main">
+
+			<section class="login-wrap">
+				<div class="login-html">
+					<input id="tab-1" type="radio" name="tab" class="sign-in" checked>
+					<label for="tab-1" class="tab">Entrar</label>
+					<input id="tab-2" type="radio" name="tab" class="sign-up">
+					<label for="tab-2" class="tab">Registrarse</label>
+					<div class="login-form">
+						<!-- Formulario de inicio de sesión -->
+						<form id="login-form" class="sign-in-htm" method="POST" action="{% url "auth:login" %}">
+							{% csrf_token %}
+							<div class="group">
+								<label for="login-user" class="label">Username</label>
+								<input id="login-user" name="username" type="text" class="input" required>
+							</div>
+							<div class="group">
+								<label for="login-pass" class="label">Password</label>
+								<input id="login-pass" name="password" type="password" class="input" required>
+							</div>
+							<div class="group">
+								<input id="remember-me" name="remember_me" type="checkbox" class="check">
+								<label for="remember-me"><span class="icon"></span> Recuérdame</label>
+							</div>
+							<div class="group">
+								<button type="submit" class="button">Sign In</button>
+							</div>
+							<div class="hr"></div>
+							<div class="foot-lnk">
+								<a href="#forgot">Olvidaste Password?</a>
+							</div>
+						</form>
+			
+						<!-- Formulario de registro -->
+						<form id="signup-form" class="sign-up-htm" method="POST" action="{% url "auth:register" %}">
+							{% csrf_token %}
+							<div class="group">
+								<label for="signup-user" class="label">Username</label>
+								<input id="signup-user" name="username" type="text" class="input" required>
+							</div>
+							<div class="group">
+								<label for="signup-pass" class="label">Password</label>
+								<input id="signup-pass" name="password" type="password" class="input" required>
+							</div>
+							<div class="group">
+								<label for="repeat-pass" class="label">Repeat Password</label>
+								<input id="signup-repeat-pass" name="repeat_password" type="password" class="input" required>
+							</div>
+							<div class="group">
+								<label for="email" class="label">Email</label>
+								<input id="signup-email" name="email" type="email" class="input" required>
+							</div>
+							<div class="group">
+								<button type="submit" class="button">Sign Up</button>
+							</div>
+							<div class="hr"></div>
+							<div class="foot-lnk">
+								<label for="tab-1">Estás Registrado?</label>
+							</div>
+						</form>
+					</div>
+				</div>
+			</section>			
+
+        </main>
+
+</body>
+</html>
