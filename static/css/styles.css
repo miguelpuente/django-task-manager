@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --background: #f4f4f9;
+    --primary: #4b49ac;
+    --secondary: #0c007d;
+    --text-color: #333;
+    --sidebar-bg: #ffffff;
+    --sidebar-collapsed: #ededed;
+}
+
+/* --- RESET GENERAL --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* --- ESTILOS DEL HEADER --- */
+header {
+    height: 60px;
+    width: 100%;
+    background: var(--sidebar-bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+/* --- BOTÓN MENÚ (MÓVILES) --- */
+.menu-toggle {
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--primary);
+}
+
+/* --- MENÚ DE USUARIO EN HEADER --- */
+.user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+}
+
+/* --- DROPDOWN --- */
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 180px;
+}
+
+.dropdown ul {
+    list-style: none;
+}
+
+.dropdown ul li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.dropdown ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    display: block;
+}
+
+.dropdown ul li:hover {
+    background: var(--sidebar-collapsed);
+}
+
+/* Botón Logout */
+.dropdown ul li form {
+    margin: 0;
+}
+
+.dropdown ul li form button {
+    width: 100%;
+    background: none;
+    border: none;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--text-color);
+}
+
+.dropdown ul li form button:hover {
+    background: var(--sidebar-collapsed);
+}
+
+.user-menu.active .dropdown {
+    display: block;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    padding-top: 60px;
+}
+
+/* --- MENÚ LATERAL --- */
+.sidebar {
+    width: 250px;
+    background: var(--sidebar-bg);
+    height: 100vh;
+    position: fixed;
+    top: 60px;
+    left: -250px;
+    transition: left 0.3s ease-in-out;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+/* --- OPCIONES DEL MENÚ --- */
+.nav {
+    list-style: none;
+    padding: 10px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-item i {
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.nav-item:hover {
+    background: var(--sidebar-collapsed);
+    border-radius: 8px;
+}
+
+/* --- CONTENIDO PRINCIPAL --- */
+.content {
+    flex-grow: 1;
+    padding: 30px;
+    margin-left: 250px;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/* --- MENÚ RESPONSIVO --- */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        left: -100%;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+}
+

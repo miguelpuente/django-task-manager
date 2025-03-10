@@ -1,65 +1,48 @@
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import UpdateView
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 from django.contrib import messages
-from django.views import View
+from django.shortcuts import redirect
+from .forms import PerfilForm, CambiarContraseñaForm, ProfileImageForm
+from django.contrib.auth.models import User
 
-class LoginView(View):
-    template_name = "usuarios/login.html"
+class PerfilView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = PerfilForm
+    template_name = "registration/perfil/perfil.html"
+    success_url = reverse_lazy("perfil")
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["password_form"] = CambiarContraseñaForm(self.request.user)
+        context["image_form"] = ProfileImageForm(instance=self.request.user.perfil)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        user_form = PerfilForm(request.POST, instance=request.user)
+        image_form = ProfileImageForm(request.POST, request.FILES, instance=request.user.perfil)
+
+        if user_form.is_valid() and image_form.is_valid():
+            user_form.save()
+            image_form.save()
+            messages.success(request, "Perfil actualizado correctamente.")
+            return redirect("perfil")
+
+        return self.get(request, *args, **kwargs)
+
+class CambiarContraseñaView(LoginRequiredMixin, PasswordChangeView):
+    form_class = CambiarContraseñaForm
+    template_name = "registration/perfil/perfil.html"
+    success_url = reverse_lazy("perfil:perfil")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Contraseña cambiada correctamente.")
+        return super().form_valid(form)
     
-    def get(self, request):
-        return render(request, self.template_name)
-    
-    def post(self, request):
-        username = request.POST.get("login-user")
-        password = request.POST.get("login-pass")
-        
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect("home")  # Redirige al home
-        else:
-            messages.error(request, "Usuario o contraseña incorrectos")
-            return render(request, self.template_name)
-
-
-# Register View (View)
-class RegisterView(View):
-    template_name = "usuarios/login.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        username = request.POST.get("signup-user")
-        email = request.POST.get("signup-email")
-        password = request.POST.get("signup-pass")
-        password2 = request.POST.get("signup-repeat-pass")
-
-        # Validaciones
-        if password != password2:
-            messages.error(request, "Las contraseñas no coinciden.")
-            return render(request, self.template_name)
-
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "El nombre de usuario ya está en uso.")
-            return render(request, self.template_name)
-
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "El correo electrónico ya está en uso.")
-            return render(request, self.template_name)
-
-        # Crear usuario
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.save()
-
-        # Iniciar sesión automáticamente
-        login(request, user)
-        return redirect("home")  # Redirigir al dashboard tras el registro
-
-# 🔹 Logout View
-class LogoutView(View):
-    def get(self, request):
-        logout(request)
-        return redirect("auth:login")
+    def form_invalid(self, form):
+        messages.error(self.request, "Error al cambiar la contraseña.")
+        return super().form_invalid(form)

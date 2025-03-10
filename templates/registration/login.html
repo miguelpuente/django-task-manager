@@ -1,15 +1,33 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/usuario/login.css' %}" >
+{% endblock css %}
+
+{% block script %}
+    <script defer src="{% static 'js/usuario/login.js' %}"></script>
+{% endblock script %}
 
 {% block contenido %}
 
-  <h2>Iniciar Sesión</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Ingresar</button>
-  </form>
-  <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
-  <a href="{% url 'registro' %}">¿No tienes cuenta? Regístrate</a>
+  <div class="form-container">
+    <h2 class="form-title">Iniciar Sesión</h2>
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn-submit">Ingresar</button>
+    </form>
+    
+    <p class="forgot-password">
+        <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+    </p>
+    <p class="signup-link">
+        ¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a>
+    </p>
+  </div>
 
 
 {% endblock %}

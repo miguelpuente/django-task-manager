@@ -1,41 +1,19 @@
 from django.urls import path
-from .views import (
-    LoginView, RegisterView, LogoutView
-)
+from .views import PerfilView, CambiarContraseñaView
 
 app_name = 'apps.perfil'
 
 urlpatterns = [
+    path(
+        route="",
+        view=PerfilView.as_view(),
+        name="perfil"
+    ),
 
     path(
-        route='registro/', 
-        view=RegisterView.as_view(),
-        name='register'
+        route="cambiar-contraseña/",
+        view=CambiarContraseñaView.as_view(),
+        name="cambiar_contraseña"
     ),
-    path(
-        route='login/',
-        view=LoginView.as_view(),
-        name='login'
-    ),
-    path(route='logout/',
-         view=LogoutView.as_view(),
-         name='logout'
-    ),
-
-    # # Recuperación de contraseña
-    # path(
-    #     route='password_reset/',
-    #     view=RecuperarPasswordView.as_view(),
-    #     name='password_reset'
-    # ),
-    # path(
-    #     route='password_reset_confirm/<uidb64>/<token>/',
-    #     view=PasswordResetConfirmViewCustom.as_view(),
-    #     name='password_reset_confirm'
-    # ),
-    # path(route='password_reset_complete/',
-    #      view=PasswordResetCompleteViewCustom.as_view(),
-    #      name='password_reset_complete'
-    # ),
 
 ]

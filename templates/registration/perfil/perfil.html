@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/perfil/perfil.css' %}" >
+{% endblock css %}
+
+{% block script %}
+    <script defer src="{% static 'js/perfil/perfil.js' %}"></script>
+{% endblock script %}
+
+{% block contenido %}
+<div class="perfil-container">
+    <h2>Mi Perfil</h2>
+    <div class="perfil-card">
+        <div class="perfil-img">
+            {% if user.perfil.imagen %}
+                <img id="userImage" src="{{ user.perfil.image.url }}" alt="Foto de perfil">
+            {% else %}
+                <img id="userImage" src={% static "img/principal/user.png" %} alt="Foto de perfil">
+            {% endif %}
+            <label for="uploadImage" class="btn-upload">Cambiar Foto</label>
+            <input type="file" id="uploadImage" accept="image/*" hidden>
+        </div>
+        <form method="post" action="{% url 'perfil:perfil' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="{{ user.first_name }}" required>
+
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" value="{{ user.last_name }}" required>
+
+            <label for="email">Correo:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" required>
+
+            <button type="submit" class="btn-save">Guardar Cambios</button>
+        </form>
+
+        <hr>
+
+        <h3>Cambiar Contraseña</h3>
+        <form method="post" action="{% url 'perfil:cambiar_contraseña' %}">
+            {% csrf_token %}
+            <label for="old_password">Contraseña Actual:</label>
+            <input type="password" id="old_password" name="old_password" required>
+
+            <label for="new_password">Nueva Contraseña:</label>
+            <input type="password" id="new_password" name="new_password" required>
+
+            <label for="confirm_password">Confirmar Nueva Contraseña:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <button type="submit" class="btn-save">Actualizar Contraseña</button>
+        </form>
+    </div>
+</div>
+{% endblock contenido %}

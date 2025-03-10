@@ -1,10 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/usuario/registro.css' %}" >
+{% endblock css %}
+
+{% block script %}
+    <script defer src="{% static 'js/usuario/registro.js' %}"></script>
+{% endblock script %}
+
 {% block contenido %}
-    <h2>Registrarse</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear cuenta</button>
-    </form>
-    <a href="{% url 'login' %}">¿Ya tienes cuenta? Inicia sesión</a>
-{% endblock %}
+    <div class="form-container">
+        <h2 class="form-title">Registrarse</h2>
+        <form method="post" class="register-form">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn-submit">Crear cuenta</button>
+        </form>
+        <p class="login-link">
+            ¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a>
+        </p>
+    </div>
+{% endblock contenido %}
